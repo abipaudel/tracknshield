@@ -74,7 +74,7 @@ const CreateTicket: React.FC = () => {
 
   const departments = [
     'IT', 'Security Operations', 'Administration', 'Finance', 'HR', 'Operations', 
-    'Management', 'Incident Response', 'Compliance', 'Engineering', 'Sales', 'Marketing'
+    'Management', 'Incident Response', 'Compliance', 'Engineering', 'Sales', 'Marketing', 'Front Office', 'F&B Production', 'F&B Service'
   ];
 
   const validateForm = (): boolean => {
