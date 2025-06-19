@@ -127,7 +127,7 @@ export const mockOrganizations: Organization[] = [
       escalationRules: []
     },
     createdAt: new Date('2025-03-01')
-   {
+   },
 ];
 
 export const mockTickets: Ticket[] = [
