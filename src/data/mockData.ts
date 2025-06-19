@@ -117,7 +117,7 @@ export const mockOrganizations: Organization[] = [
    },
    { 
   id: 'lpr',
-    name: 'LPR IT',
+    name: 'Lumbini Palace resort',
     domain: 'lumbinipalace.com',
     isActive: true,
     settings: {
