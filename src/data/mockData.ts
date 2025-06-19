@@ -114,9 +114,8 @@ export const mockOrganizations: Organization[] = [
       escalationRules: []
     },
     createdAt: new Date('2024-03-01')
-   {
-    
-  }
+   },
+   { 
   id: 'lpr',
     name: 'LPR IT',
     domain: 'lumbinipalace.com',
