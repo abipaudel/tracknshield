@@ -573,11 +573,11 @@ const CreateTicket: React.FC = () => {
 
             {/* Support Contact */}
             <div className="bg-gray-50 rounded-xl border border-gray-200 p-6">
-              <h4 className="text-sm font-semibold text-gray-900 mb-3">Need Immediate Help?</h4>
+              <h4 className="text-sm font-semibold text-gray-900 mb-3">Need Immediate Support?</h4>
               <div className="text-sm text-gray-600 space-y-2">
                 <p>For critical security incidents:</p>
-                <p className="font-medium text-red-600">Emergency: +1 (555) 911-SOC</p>
-                <p className="font-medium">Email: emergency@itsoc.com</p>
+                <p className="font-medium text-red-600">Emergency: +977 9842812555-SOC</p>
+                <p className="font-medium">Email: paudel.abi@gmail.com</p>
               </div>
             </div>
           </div>
