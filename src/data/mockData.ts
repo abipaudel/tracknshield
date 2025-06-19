@@ -114,7 +114,21 @@ export const mockOrganizations: Organization[] = [
       escalationRules: []
     },
     createdAt: new Date('2024-03-01')
+   {
+    
   }
+  id: 'lpr',
+    name: 'LPR IT',
+    domain: 'lumbinipalace.com',
+    isActive: true,
+    settings: {
+      slaHours: { critical: 4, high: 8, medium: 24, low: 72 },
+      categories: ['hardware', 'software', 'accounts', 'email', 'system'],
+      departments: ['Finance', 'HR', 'Operations', 'IT', 'Front Office', 'F&B Service', 'F&B Production'],
+      escalationRules: []
+    },
+    createdAt: new Date('2025-03-01')
+   {
 ];
 
 export const mockTickets: Ticket[] = [
