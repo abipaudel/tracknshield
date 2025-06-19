@@ -49,7 +49,7 @@ export const mockUsers: User[] = [
     department: 'Finance',
     isActive: true,
     createdAt: new Date('2024-03-01')
-  }
+  },
   {
     id: '6',
     email: 'info@lumbinipalace.com',
@@ -59,7 +59,7 @@ export const mockUsers: User[] = [
     department: 'Front Office',
     isActive: true,
     createdAt: new Date('2025-06-01')
-  }
+  },
 ];
 
 export const mockOrganizations: Organization[] = [
