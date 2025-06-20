@@ -7,6 +7,7 @@ import Dashboard from './components/Dashboard';
 import CreateTicket from './components/CreateTicket';
 import UserManagement from './components/UserManagement';
 import OrganizationManagement from './components/OrganizationManagement';
+import AssetInventory from './components/AssetInventory';
 import Settings from './components/Settings';
 
 const AppContent: React.FC = () => {
@@ -48,6 +49,8 @@ const AppContent: React.FC = () => {
             <p className="text-gray-600">Organization-wide ticket management coming soon...</p>
           </div>
         );
+      case 'assets':
+        return <AssetInventory />;
       case 'analytics':
         return (
           <div className="text-center py-12">
