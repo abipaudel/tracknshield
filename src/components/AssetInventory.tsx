@@ -26,7 +26,6 @@ import {
   Monitor,
   Server,
   Printer,
-  IPCamera,
   Smartphone,
   Tablet,
   HardDrive,
