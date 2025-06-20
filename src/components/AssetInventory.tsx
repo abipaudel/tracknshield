@@ -90,7 +90,6 @@ const AssetInventory: React.FC = () => {
     { id: 'server', label: 'Server', icon: Server, color: 'bg-purple-100 text-purple-800' },
     { id: 'network', label: 'Network Equipment', icon: HardDrive, color: 'bg-orange-100 text-orange-800' },
     { id: 'printer', label: 'Printer', icon: Printer, color: 'bg-gray-100 text-gray-800' },
-     { id: 'IPCamera', label: 'IPCamera', icon: IPCamera, color: 'bg-gray-100 text-gray-800' },
     { id: 'phone', label: 'Phone', icon: Smartphone, color: 'bg-pink-100 text-pink-800' },
     { id: 'tablet', label: 'Tablet', icon: Tablet, color: 'bg-indigo-100 text-indigo-800' },
     { id: 'monitor', label: 'Monitor', icon: Monitor, color: 'bg-cyan-100 text-cyan-800' },
@@ -120,7 +119,7 @@ const AssetInventory: React.FC = () => {
 
   const departments = [
     'IT', 'Security Operations', 'Administration', 'Finance', 'HR', 'Operations', 
-    'Management', 'Incident Response', 'Compliance', 'Engineering', 'Sales', 'Marketing', 'Front Office', 'F&B Production', 'F&B Service'
+    'Management', 'Incident Response', 'Compliance', 'Engineering', 'Sales', 'Marketing'
   ];
 
   // Load assets from localStorage
@@ -808,7 +807,7 @@ const AssetInventory: React.FC = () => {
                     value={newAsset.assignedTo}
                     onChange={(e) => setNewAsset(prev => ({ ...prev, assignedTo: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Abi Paudel"
+                    placeholder="John Doe"
                   />
                 </div>
                 <div>
@@ -818,7 +817,7 @@ const AssetInventory: React.FC = () => {
                     value={newAsset.assignedToEmail}
                     onChange={(e) => setNewAsset(prev => ({ ...prev, assignedToEmail: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="paudel.abi@gmail.com"
+                    placeholder="john.doe@company.com"
                   />
                 </div>
                 <div>
@@ -828,7 +827,7 @@ const AssetInventory: React.FC = () => {
                     value={newAsset.location}
                     onChange={(e) => setNewAsset(prev => ({ ...prev, location: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Front Office, Desk 1"
+                    placeholder="Office Floor 2, Desk 15"
                   />
                 </div>
                 <div>
