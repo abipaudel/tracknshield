@@ -104,7 +104,20 @@ export const mockOrganizations: Organization[] = [
       escalationRules: []
     },
     createdAt: new Date('2024-03-01')
-  }
+    },
+    {
+    id: 'lpr',
+    name: 'Lumbini Palace resort',
+    domain: 'soc4.com',
+    isActive: true,
+    settings: {
+      slaHours: { critical: 4, high: 8, medium: 24, low: 72 },
+      categories: ['hardware', 'software', 'accounts', 'email', 'system'],
+      departments: ['Finance', 'HR', 'Operations', 'IT', 'Front Office', 'F&B Production', 'F&B Service'],
+      escalationRules: []
+    },
+    createdAt: new Date('2024-03-01')
+  },
 ];
 
 export const mockTickets: Ticket[] = [
@@ -165,8 +178,8 @@ export const mockAssets: Asset[] = [
     organizationId: 'soc1',
     organizationName: 'SOC Operations Alpha',
     department: 'IT',
-    assignedTo: 'John Doe',
-    assignedToEmail: 'john.doe@soc1.com',
+    assignedTo: 'Abi Paudel',
+    assignedToEmail: 'paudel.abi@gmail.com',
     location: 'Office Floor 2, Desk 15',
     purchaseDate: new Date('2024-01-15'),
     warrantyExpiry: new Date('2027-01-15'),
