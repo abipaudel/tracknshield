@@ -107,8 +107,8 @@ export const mockOrganizations: Organization[] = [
     },
     {
     id: 'lpr',
-    name: 'Lumbini Palace resort',
-    domain: 'soc4.com',
+    name: 'Lumbini Palace Resort',
+    domain: 'lumbinipalace.com',
     isActive: true,
     settings: {
       slaHours: { critical: 4, high: 8, medium: 24, low: 72 },
