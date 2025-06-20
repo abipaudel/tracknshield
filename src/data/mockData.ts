@@ -1,4 +1,4 @@
-import { User, Organization, Ticket, DashboardStats } from '../types';
+import { User, Organization, Ticket, DashboardStats, Asset } from '../types';
 
 export const mockUsers: User[] = [
   {
@@ -49,17 +49,7 @@ export const mockUsers: User[] = [
     department: 'Finance',
     isActive: true,
     createdAt: new Date('2024-03-01')
-  },
-  {
-    id: '6',
-    email: 'info@lumbinipalace.com',
-    role: 'end_user',
-    organizationId: 'lpr',
-    organizationName: 'Lumbini Palace Resort',
-    department: 'Front Office',
-    isActive: true,
-    createdAt: new Date('2025-06-01')
-  },
+  }
 ];
 
 export const mockOrganizations: Organization[] = [
@@ -114,20 +104,7 @@ export const mockOrganizations: Organization[] = [
       escalationRules: []
     },
     createdAt: new Date('2024-03-01')
-   },
-   { 
-  id: 'lpr',
-    name: 'Lumbini Palace resort',
-    domain: 'lumbinipalace.com',
-    isActive: true,
-    settings: {
-      slaHours: { critical: 4, high: 8, medium: 24, low: 72 },
-      categories: ['hardware', 'software', 'accounts', 'email', 'system'],
-      departments: ['Finance', 'HR', 'Operations', 'IT', 'Front Office', 'F&B Service', 'F&B Production'],
-      escalationRules: []
-    },
-    createdAt: new Date('2025-03-01')
-   },
+  }
 ];
 
 export const mockTickets: Ticket[] = [
@@ -170,6 +147,75 @@ export const mockTickets: Ticket[] = [
     slaDeadline: new Date(Date.now() + 1 * 60 * 60 * 1000),
     createdAt: new Date(Date.now() - 30 * 60 * 1000),
     updatedAt: new Date()
+  }
+];
+
+export const mockAssets: Asset[] = [
+  {
+    id: '1',
+    assetTag: 'SOC-001234',
+    name: 'Dell OptiPlex 7090',
+    category: 'computer',
+    type: 'Desktop Computer',
+    brand: 'Dell',
+    model: 'OptiPlex 7090',
+    serialNumber: 'DL7090ABC123',
+    status: 'active',
+    condition: 'excellent',
+    organizationId: 'soc1',
+    organizationName: 'SOC Operations Alpha',
+    department: 'IT',
+    assignedTo: 'John Doe',
+    assignedToEmail: 'john.doe@soc1.com',
+    location: 'Office Floor 2, Desk 15',
+    purchaseDate: new Date('2024-01-15'),
+    warrantyExpiry: new Date('2027-01-15'),
+    purchasePrice: 1200,
+    currentValue: 800,
+    supplier: 'Dell Technologies',
+    notes: 'Primary workstation for IT department',
+    maintenanceHistory: [],
+    specifications: {
+      'CPU': 'Intel Core i7-11700',
+      'RAM': '16GB DDR4',
+      'Storage': '512GB SSD',
+      'OS': 'Windows 11 Pro'
+    },
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15')
+  },
+  {
+    id: '2',
+    assetTag: 'SOC-001235',
+    name: 'HP EliteBook 850 G8',
+    category: 'laptop',
+    type: 'Business Laptop',
+    brand: 'HP',
+    model: 'EliteBook 850 G8',
+    serialNumber: 'HP850G8XYZ789',
+    status: 'active',
+    condition: 'good',
+    organizationId: 'soc2',
+    organizationName: 'SOC Operations Beta',
+    department: 'Security Operations',
+    assignedTo: 'Jane Smith',
+    assignedToEmail: 'jane.smith@soc2.com',
+    location: 'Remote Work',
+    purchaseDate: new Date('2024-02-01'),
+    warrantyExpiry: new Date('2027-02-01'),
+    purchasePrice: 1500,
+    currentValue: 1100,
+    supplier: 'HP Inc.',
+    notes: 'Mobile workstation for security analyst',
+    maintenanceHistory: [],
+    specifications: {
+      'CPU': 'Intel Core i7-1165G7',
+      'RAM': '32GB DDR4',
+      'Storage': '1TB SSD',
+      'OS': 'Windows 11 Pro'
+    },
+    createdAt: new Date('2024-02-01'),
+    updatedAt: new Date('2024-02-01')
   }
 ];
 
