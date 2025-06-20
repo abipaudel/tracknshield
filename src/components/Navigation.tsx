@@ -7,7 +7,8 @@ import {
   Users, 
   Settings, 
   Shield,
-  AlertTriangle
+  AlertTriangle,
+  Package
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
@@ -24,6 +25,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange }) =>
     { id: 'create-ticket', label: 'Create Ticket', icon: Plus, roles: ['super_admin', 'org_admin', 'it_support', 'soc_analyst', 'end_user'] },
     { id: 'tickets', label: 'My Tickets', icon: Ticket, roles: ['super_admin', 'org_admin', 'it_support', 'soc_analyst', 'end_user'] },
     { id: 'all-tickets', label: 'All Tickets', icon: AlertTriangle, roles: ['super_admin', 'org_admin', 'it_support', 'soc_analyst'] },
+    { id: 'assets', label: 'IT Assets', icon: Package, roles: ['super_admin', 'org_admin', 'it_support'] },
     { id: 'analytics', label: 'Analytics', icon: BarChart3, roles: ['super_admin', 'org_admin', 'it_support', 'soc_analyst'] },
     { id: 'users', label: 'User Management', icon: Users, roles: ['super_admin', 'org_admin'] },
     { id: 'organizations', label: 'Organizations', icon: Shield, roles: ['super_admin'] },
