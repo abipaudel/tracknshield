@@ -79,6 +79,75 @@ export interface InternalNote {
   isInternal: boolean;
 }
 
+export interface Asset {
+  id: string;
+  assetTag: string;
+  name: string;
+  category: AssetCategory;
+  type: string;
+  brand: string;
+  model: string;
+  serialNumber: string;
+  status: AssetStatus;
+  condition: AssetCondition;
+  organizationId: string;
+  organizationName: string;
+  department: string;
+  assignedTo?: string;
+  assignedToEmail?: string;
+  location: string;
+  purchaseDate: Date;
+  warrantyExpiry?: Date;
+  purchasePrice: number;
+  currentValue: number;
+  supplier: string;
+  notes: string;
+  maintenanceHistory: MaintenanceRecord[];
+  specifications: Record<string, string>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface MaintenanceRecord {
+  id: string;
+  date: Date;
+  type: 'repair' | 'maintenance' | 'upgrade' | 'inspection';
+  description: string;
+  cost: number;
+  performedBy: string;
+  nextMaintenanceDate?: Date;
+}
+
+export type AssetCategory = 
+  | 'computer'
+  | 'laptop'
+  | 'server'
+  | 'network'
+  | 'printer'
+  | 'phone'
+  | 'tablet'
+  | 'monitor'
+  | 'peripheral'
+  | 'software'
+  | 'security'
+  | 'other';
+
+export type AssetStatus = 
+  | 'active'
+  | 'inactive'
+  | 'maintenance'
+  | 'retired'
+  | 'lost'
+  | 'stolen'
+  | 'disposed';
+
+export type AssetCondition = 
+  | 'excellent'
+  | 'good'
+  | 'fair'
+  | 'poor'
+  | 'damaged';
+
 export type TicketCategory = 
   | 'hardware'
   | 'software' 
@@ -114,4 +183,16 @@ export interface DashboardStats {
   ticketsByCategory: Record<TicketCategory, number>;
   ticketsByPriority: Record<TicketPriority, number>;
   recentTickets: Ticket[];
+}
+
+export interface AssetStats {
+  totalAssets: number;
+  activeAssets: number;
+  maintenanceAssets: number;
+  retiredAssets: number;
+  totalValue: number;
+  assetsByCategory: Record<AssetCategory, number>;
+  assetsByStatus: Record<AssetStatus, number>;
+  warrantyExpiring: Asset[];
+  recentAssets: Asset[];
 }
