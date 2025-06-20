@@ -102,7 +102,7 @@ const TicketManager: React.FC<{ mode: 'create' | 'edit'; ticketId?: string }> = 
       const loadTicket = async () => {
         try {
           // In a real app, you would fetch from API
-          const tickets = JSON.parse(localStorage.getItem('tickets') || [];
+          const tickets = JSON.parse(localStorage.getItem('tickets') || [])
           const ticket = tickets.find((t: Ticket) => t.id === ticketId);
           
           if (ticket) {
