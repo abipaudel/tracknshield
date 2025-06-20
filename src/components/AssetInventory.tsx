@@ -665,7 +665,7 @@ const AssetInventory: React.FC = () => {
                     value={newAsset.assetTag}
                     onChange={(e) => setNewAsset(prev => ({ ...prev, assetTag: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="AST-123456"
+                    placeholder="ITA-123456"
                   />
                 </div>
                 <div>
@@ -807,7 +807,7 @@ const AssetInventory: React.FC = () => {
                     value={newAsset.assignedTo}
                     onChange={(e) => setNewAsset(prev => ({ ...prev, assignedTo: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="John Doe"
+                    placeholder="Abi Paudel"
                   />
                 </div>
                 <div>
@@ -817,7 +817,7 @@ const AssetInventory: React.FC = () => {
                     value={newAsset.assignedToEmail}
                     onChange={(e) => setNewAsset(prev => ({ ...prev, assignedToEmail: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="john.doe@company.com"
+                    placeholder="paudel.abi@gmail.com"
                   />
                 </div>
                 <div>
@@ -827,7 +827,7 @@ const AssetInventory: React.FC = () => {
                     value={newAsset.location}
                     onChange={(e) => setNewAsset(prev => ({ ...prev, location: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Office Floor 2, Desk 15"
+                    placeholder="Office Office , Desk 1"
                   />
                 </div>
                 <div>
