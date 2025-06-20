@@ -124,6 +124,7 @@ export type AssetCategory =
   | 'server'
   | 'network'
   | 'printer'
+  | 'IPCamera'
   | 'phone'
   | 'tablet'
   | 'monitor'
