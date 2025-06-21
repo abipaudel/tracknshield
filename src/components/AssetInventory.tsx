@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import { 
   Package, 
   Plus, 
@@ -462,8 +462,8 @@ const AssetInventory: React.FC = () => {
           />
           <StatCard
             title="Total Value"
-            value={`रु ${stats.totalValue.toLocaleString()}`}
-            icon={<NepaliRupeeIcon className="w-6 h-6 text-purple-600" />} // Custom icon
+            value={`$${stats.totalValue.toLocaleString()}`}
+            icon={<DollarSign className="w-6 h-6 text-purple-600" />}
             color="bg-purple-100"
           />
         </div>
