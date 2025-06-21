@@ -107,7 +107,7 @@ const Login: React.FC = () => {
           </div>
         </div>
 
-       {/* Professional Footer */}
+      {/* Professional Footer */}
 <footer className="bg-white border-t border-gray-200 py-8">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div className="md:flex md:items-center md:justify-between">
@@ -145,6 +145,7 @@ const Login: React.FC = () => {
       </div>
     </div>
   </div>
+</footer>
   );
 };
 
