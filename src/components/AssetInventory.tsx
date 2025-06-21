@@ -462,7 +462,7 @@ const AssetInventory: React.FC = () => {
           />
           <StatCard
             title="Total Value"
-            value={`$${stats.totalValue.toLocaleString()}`}
+            value={`NPR ${stats.totalValue.toLocaleString()}`}
             icon={<DollarSign className="w-6 h-6 text-purple-600" />}
             color="bg-purple-100"
           />
@@ -579,7 +579,7 @@ const AssetInventory: React.FC = () => {
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-600">Value:</span>
-                  <span className="font-medium">${asset.currentValue.toLocaleString()}</span>
+                  <span className="font-medium">NPR {asset.currentValue.toLocaleString()}</span>
                 </div>
                 {asset.assignedTo && (
                   <div className="flex items-center text-sm text-gray-500">
@@ -1017,11 +1017,11 @@ const AssetInventory: React.FC = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Purchase Price:</span>
-                      <span className="font-medium">${viewingAsset.purchasePrice.toLocaleString()}</span>
+                      <span className="font-medium">NPR {viewingAsset.purchasePrice.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Current Value:</span>
-                      <span className="font-medium">${viewingAsset.currentValue.toLocaleString()}</span>
+                      <span className="font-medium">NPR {viewingAsset.currentValue.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Purchase Date:</span>
@@ -1075,7 +1075,7 @@ const AssetInventory: React.FC = () => {
                         <p className="text-gray-700 mb-2">{record.description}</p>
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-gray-600">Performed by: {record.performedBy}</span>
-                          <span className="text-gray-600">Cost: ${record.cost.toLocaleString()}</span>
+                          <span className="text-gray-600">Cost: NPR {record.cost.toLocaleString()}</span>
                         </div>
                       </div>
                     ))}
