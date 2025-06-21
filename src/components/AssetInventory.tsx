@@ -463,8 +463,8 @@ const AssetInventory: React.FC = () => {
           />
           <StatCard
             title="Total Value"
-            value={`NPR ${stats.totalValue.toLocaleString()}`}
-            icon={<DollarSign className="w-6 h-6 text-purple-600" />}
+            value={`रु ${stats.totalValue.toLocaleString()}`}
+            icon={<NepaliRupeeIcon className="w-6 h-6 text-purple-600" />} // Custom icon
             color="bg-purple-100"
           />
         </div>
