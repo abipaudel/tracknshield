@@ -174,6 +174,9 @@ const Settings: React.FC = () => {
               <option value="HR">HR</option>
               <option value="Front Office">Front Office</option>
               <option value="Operations">Operations</option>
+              <option value="F&B Production">F&B Production</option>
+              <option value="F&B Service">F&B Service</option>
+              <option value="Housekeeping">Housekeeping</option>
             </select>
           </div>
         </div>
