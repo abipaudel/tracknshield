@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { NepaliRupeeIcon } from '/components/NepaliRupeeIcon';  
+import React, { useState, useEffect } from 'react'; 
 import { 
   Package, 
   Plus, 
