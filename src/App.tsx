@@ -5,6 +5,8 @@ import Layout from './components/Layout';
 import Navigation from './components/Navigation';
 import Dashboard from './components/Dashboard';
 import CreateTicket from './components/CreateTicket';
+import MyTickets from './components/MyTickets';
+import AllTickets from './components/AllTickets';
 import UserManagement from './components/UserManagement';
 import OrganizationManagement from './components/OrganizationManagement';
 import AssetInventory from './components/AssetInventory';
@@ -36,19 +38,9 @@ const AppContent: React.FC = () => {
       case 'create-ticket':
         return <CreateTicket />;
       case 'tickets':
-        return (
-          <div className="text-center py-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">My Tickets</h2>
-            <p className="text-gray-600">Ticket management interface coming soon...</p>
-          </div>
-        );
+        return <MyTickets />;
       case 'all-tickets':
-        return (
-          <div className="text-center py-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">All Tickets</h2>
-            <p className="text-gray-600">Organization-wide ticket management coming soon...</p>
-          </div>
-        );
+        return <AllTickets />;
       case 'assets':
         return <AssetInventory />;
       case 'analytics':
