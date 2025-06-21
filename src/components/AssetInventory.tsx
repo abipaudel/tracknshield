@@ -462,7 +462,7 @@ const AssetInventory: React.FC = () => {
           />
           <StatCard
             title="Total Value"
-            value={`$${stats.totalValue.toLocaleString()}`}
+            value={`NPR ${stats.totalValue.toLocaleString()}`}
             icon={<DollarSign className="w-6 h-6 text-purple-600" />}
             color="bg-purple-100"
           />
@@ -528,7 +528,7 @@ const AssetInventory: React.FC = () => {
           const isWarrantyExpiring = asset.warrantyExpiry && 
             Math.ceil((asset.warrantyExpiry.getTime() - Date.now()) / (1000 * 60 * 60 * 24)) <= 30;
           
-          return (
+      return (
             <div key={asset.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
