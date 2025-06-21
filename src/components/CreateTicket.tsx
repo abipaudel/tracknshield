@@ -74,7 +74,7 @@ const CreateTicket: React.FC = () => {
 
   const departments = [
     'IT', 'Security Operations', 'Administration', 'Finance', 'HR', 'Operations', 
-    'Management', 'Incident Response', 'Compliance', 'Engineering', 'Sales', 'Marketing'
+    'Management', 'Incident Response', 'Compliance', 'Engineering', 'Sales', 'Marketing', 'Front Office', 'F&B Production', 'F&B Service', 'Digital Marketing', 'R&D', 'Quality Assurance'
   ];
 
   const validateForm = (): boolean => {
@@ -575,9 +575,11 @@ const CreateTicket: React.FC = () => {
             <div className="bg-gray-50 rounded-xl border border-gray-200 p-6">
               <h4 className="text-sm font-semibold text-gray-900 mb-3">Need Immediate Help?</h4>
               <div className="text-sm text-gray-600 space-y-2">
+                <p>For IT Support:</p>
+                <p className="font-medium text-red-600">Support: +977 9842812555</p>
                 <p>For critical security incidents:</p>
-                <p className="font-medium text-red-600">Emergency: +1 (555) 911-SOC</p>
-                <p className="font-medium">Email: emergency@itsoc.com</p>
+                <p className="font-medium text-red-600">Emergency: +91 7995462393</p>
+                <p className="font-medium">Email: paudel.abi@gmail.com</p>
               </div>
             </div>
           </div>
