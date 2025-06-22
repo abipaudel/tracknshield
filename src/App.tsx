@@ -10,6 +10,7 @@ import AllTickets from './components/AllTickets';
 import UserManagement from './components/UserManagement';
 import OrganizationManagement from './components/OrganizationManagement';
 import AssetInventory from './components/AssetInventory';
+import IPAMDashboard from './components/IPAMDashboard';
 import Settings from './components/Settings';
 
 const AppContent: React.FC = () => {
@@ -43,6 +44,8 @@ const AppContent: React.FC = () => {
         return <AllTickets />;
       case 'assets':
         return <AssetInventory />;
+      case 'ipam':
+        return <IPAMDashboard />;
       case 'analytics':
         return (
           <div className="text-center py-12">
