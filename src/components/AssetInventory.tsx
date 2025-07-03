@@ -35,6 +35,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { mockOrganizations } from '../data/mockData';
 import { Asset, AssetCategory, AssetStatus, AssetCondition, MaintenanceRecord, AssetStats } from '../types';
+import { AssetService } from '../services/assetService';
 
 const AssetInventory: React.FC = () => {
   const { user } = useAuth();
@@ -47,6 +48,7 @@ const AssetInventory: React.FC = () => {
   const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
   const [viewingAsset, setViewingAsset] = useState<Asset | null>(null);
   const [showStats, setShowStats] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState<AssetStats>({
     totalAssets: 0,
     activeAssets: 0,
@@ -119,35 +121,31 @@ const AssetInventory: React.FC = () => {
 
   const departments = [
     'IT', 'Security Operations', 'Administration', 'Finance', 'HR', 'Operations', 
-    'Management', 'Incident Response', 'Compliance', 'Engineering', 'Sales', 'Marketing', 'Front Office', 'F&B Production', 'F&B Service', 'Housekeeping'
+    'Management', 'Incident Response', 'Compliance', 'Engineering', 'Sales', 'Marketing'
   ];
 
-  // Load assets from localStorage
+  // Load assets from Supabase
   useEffect(() => {
-    const storedAssets = localStorage.getItem('assets');
-    if (storedAssets) {
-      const parsedAssets = JSON.parse(storedAssets).map((asset: any) => ({
-        ...asset,
-        purchaseDate: new Date(asset.purchaseDate),
-        warrantyExpiry: asset.warrantyExpiry ? new Date(asset.warrantyExpiry) : undefined,
-        createdAt: new Date(asset.createdAt),
-        updatedAt: new Date(asset.updatedAt),
-        maintenanceHistory: asset.maintenanceHistory?.map((record: any) => ({
-          ...record,
-          date: new Date(record.date),
-          nextMaintenanceDate: record.nextMaintenanceDate ? new Date(record.nextMaintenanceDate) : undefined
-        })) || []
-      }));
-      setAssets(parsedAssets);
-    }
-  }, []);
+    loadAssets();
+  }, [user]);
 
-  // Save assets to localStorage and update stats
-  useEffect(() => {
-    if (assets.length >= 0) {
-      localStorage.setItem('assets', JSON.stringify(assets));
-      updateStats();
+  const loadAssets = async () => {
+    if (!user) return;
+    
+    setIsLoading(true);
+    try {
+      const assetsData = await AssetService.getAssets(user.role, user.organizationId);
+      setAssets(assetsData);
+    } catch (error) {
+      console.error('Error loading assets:', error);
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  // Update stats when assets change
+  useEffect(() => {
+    updateStats();
   }, [assets]);
 
   const updateStats = () => {
@@ -202,26 +200,18 @@ const AssetInventory: React.FC = () => {
       const matchesStatus = !filterStatus || asset.status === filterStatus;
       const matchesOrg = !filterOrg || asset.organizationId === filterOrg;
       
-      // Permission check
-      const hasPermission = user?.role === 'super_admin' || 
-                           (user?.role === 'org_admin' && asset.organizationId === user.organizationId) ||
-                           (user?.role === 'it_support' && asset.organizationId === user.organizationId);
-      
-      return matchesSearch && matchesCategory && matchesStatus && matchesOrg && hasPermission;
+      return matchesSearch && matchesCategory && matchesStatus && matchesOrg;
     });
   };
 
   const generateAssetTag = (): string => {
-    const prefix = user?.organizationName?.substring(0, 3).toUpperCase() || 'AST';
-    const timestamp = Date.now().toString().slice(-6);
-    return `${prefix}-${timestamp}`;
+    return AssetService.generateAssetTag(user?.organizationName || 'AST');
   };
 
-  const handleAddAsset = () => {
+  const handleAddAsset = async () => {
     if (!newAsset.name || !newAsset.assetTag) return;
 
-    const asset: Asset = {
-      id: Date.now().toString(),
+    const assetData: Omit<Asset, 'id' | 'createdAt' | 'updatedAt'> = {
       assetTag: newAsset.assetTag,
       name: newAsset.name,
       category: newAsset.category,
@@ -244,14 +234,15 @@ const AssetInventory: React.FC = () => {
       supplier: newAsset.supplier,
       notes: newAsset.notes,
       maintenanceHistory: [],
-      specifications: newAsset.specifications,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      specifications: newAsset.specifications
     };
 
-    setAssets(prev => [...prev, asset]);
-    setShowAddModal(false);
-    resetForm();
+    const savedAsset = await AssetService.createAsset(assetData);
+    if (savedAsset) {
+      setAssets(prev => [...prev, savedAsset]);
+      setShowAddModal(false);
+      resetForm();
+    }
   };
 
   const handleEditAsset = (asset: Asset) => {
@@ -282,47 +273,52 @@ const AssetInventory: React.FC = () => {
     });
   };
 
-  const handleUpdateAsset = () => {
+  const handleUpdateAsset = async () => {
     if (!editingAsset || !newAsset.name || !newAsset.assetTag) return;
 
-    setAssets(prev => prev.map(a => 
-      a.id === editingAsset.id 
-        ? {
-            ...a,
-            assetTag: newAsset.assetTag,
-            name: newAsset.name,
-            category: newAsset.category,
-            type: newAsset.type,
-            brand: newAsset.brand,
-            model: newAsset.model,
-            serialNumber: newAsset.serialNumber,
-            status: newAsset.status,
-            condition: newAsset.condition,
-            organizationId: newAsset.organizationId,
-            organizationName: newAsset.organizationName,
-            department: newAsset.department,
-            assignedTo: newAsset.assignedTo,
-            assignedToEmail: newAsset.assignedToEmail,
-            location: newAsset.location,
-            purchaseDate: newAsset.purchaseDate,
-            warrantyExpiry: newAsset.warrantyExpiry,
-            purchasePrice: newAsset.purchasePrice,
-            currentValue: newAsset.currentValue,
-            supplier: newAsset.supplier,
-            notes: newAsset.notes,
-            specifications: newAsset.specifications,
-            updatedAt: new Date()
-          }
-        : a
-    ));
+    const updateData: Partial<Asset> = {
+      assetTag: newAsset.assetTag,
+      name: newAsset.name,
+      category: newAsset.category,
+      type: newAsset.type,
+      brand: newAsset.brand,
+      model: newAsset.model,
+      serialNumber: newAsset.serialNumber,
+      status: newAsset.status,
+      condition: newAsset.condition,
+      organizationId: newAsset.organizationId,
+      organizationName: newAsset.organizationName,
+      department: newAsset.department,
+      assignedTo: newAsset.assignedTo,
+      assignedToEmail: newAsset.assignedToEmail,
+      location: newAsset.location,
+      purchaseDate: newAsset.purchaseDate,
+      warrantyExpiry: newAsset.warrantyExpiry,
+      purchasePrice: newAsset.purchasePrice,
+      currentValue: newAsset.currentValue,
+      supplier: newAsset.supplier,
+      notes: newAsset.notes,
+      specifications: newAsset.specifications
+    };
 
-    setEditingAsset(null);
-    resetForm();
+    const success = await AssetService.updateAsset(editingAsset.id, updateData, user?.email || '');
+    if (success) {
+      setAssets(prev => prev.map(a => 
+        a.id === editingAsset.id 
+          ? { ...a, ...updateData, updatedAt: new Date() }
+          : a
+      ));
+      setEditingAsset(null);
+      resetForm();
+    }
   };
 
-  const handleDeleteAsset = (assetId: string) => {
+  const handleDeleteAsset = async (assetId: string) => {
     if (confirm('Are you sure you want to delete this asset?')) {
-      setAssets(prev => prev.filter(a => a.id !== assetId));
+      const success = await AssetService.deleteAsset(assetId, user?.email || '');
+      if (success) {
+        setAssets(prev => prev.filter(a => a.id !== assetId));
+      }
     }
   };
 
@@ -401,6 +397,17 @@ const AssetInventory: React.FC = () => {
     </div>
   );
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-64">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading assets...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -462,7 +469,7 @@ const AssetInventory: React.FC = () => {
           />
           <StatCard
             title="Total Value"
-            value={`NPR ${stats.totalValue.toLocaleString()}`}
+            value={`$${stats.totalValue.toLocaleString()}`}
             icon={<DollarSign className="w-6 h-6 text-purple-600" />}
             color="bg-purple-100"
           />
@@ -528,7 +535,7 @@ const AssetInventory: React.FC = () => {
           const isWarrantyExpiring = asset.warrantyExpiry && 
             Math.ceil((asset.warrantyExpiry.getTime() - Date.now()) / (1000 * 60 * 60 * 24)) <= 30;
           
-      return (
+          return (
             <div key={asset.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
@@ -579,7 +586,7 @@ const AssetInventory: React.FC = () => {
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-gray-600">Value:</span>
-                  <span className="font-medium">NPR {asset.currentValue.toLocaleString()}</span>
+                  <span className="font-medium">${asset.currentValue.toLocaleString()}</span>
                 </div>
                 {asset.assignedTo && (
                   <div className="flex items-center text-sm text-gray-500">
@@ -665,7 +672,7 @@ const AssetInventory: React.FC = () => {
                     value={newAsset.assetTag}
                     onChange={(e) => setNewAsset(prev => ({ ...prev, assetTag: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="ITA-123456"
+                    placeholder="AST-123456"
                   />
                 </div>
                 <div>
@@ -807,7 +814,7 @@ const AssetInventory: React.FC = () => {
                     value={newAsset.assignedTo}
                     onChange={(e) => setNewAsset(prev => ({ ...prev, assignedTo: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Abi Paudel"
+                    placeholder="John Doe"
                   />
                 </div>
                 <div>
@@ -817,7 +824,7 @@ const AssetInventory: React.FC = () => {
                     value={newAsset.assignedToEmail}
                     onChange={(e) => setNewAsset(prev => ({ ...prev, assignedToEmail: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="paudel.abi@gmail.com"
+                    placeholder="john.doe@company.com"
                   />
                 </div>
                 <div>
@@ -827,7 +834,7 @@ const AssetInventory: React.FC = () => {
                     value={newAsset.location}
                     onChange={(e) => setNewAsset(prev => ({ ...prev, location: e.target.value }))}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Office Office , Desk 1"
+                    placeholder="Office Floor 2, Desk 15"
                   />
                 </div>
                 <div>
@@ -1017,11 +1024,11 @@ const AssetInventory: React.FC = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Purchase Price:</span>
-                      <span className="font-medium">NPR {viewingAsset.purchasePrice.toLocaleString()}</span>
+                      <span className="font-medium">${viewingAsset.purchasePrice.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Current Value:</span>
-                      <span className="font-medium">NPR {viewingAsset.currentValue.toLocaleString()}</span>
+                      <span className="font-medium">${viewingAsset.currentValue.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Purchase Date:</span>
@@ -1075,7 +1082,7 @@ const AssetInventory: React.FC = () => {
                         <p className="text-gray-700 mb-2">{record.description}</p>
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-gray-600">Performed by: {record.performedBy}</span>
-                          <span className="text-gray-600">Cost: NPR {record.cost.toLocaleString()}</span>
+                          <span className="text-gray-600">Cost: ${record.cost.toLocaleString()}</span>
                         </div>
                       </div>
                     ))}
