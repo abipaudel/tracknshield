@@ -16,6 +16,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { mockOrganizations } from '../data/mockData';
 import { TicketCategory, TicketPriority, Ticket } from '../types';
+import { TicketService } from '../services/ticketService';
 
 interface TicketForm {
   title: string;
@@ -74,7 +75,7 @@ const CreateTicket: React.FC = () => {
 
   const departments = [
     'IT', 'Security Operations', 'Administration', 'Finance', 'HR', 'Operations', 
-    'Management', 'Incident Response', 'Compliance', 'Engineering', 'Sales', 'Marketing', 'Front Office', 'F&B Production', 'F&B Service', 'Digital Marketing', 'R&D', 'Quality Assurance'
+    'Management', 'Incident Response', 'Compliance', 'Engineering', 'Sales', 'Marketing'
   ];
 
   const validateForm = (): boolean => {
@@ -90,13 +91,6 @@ const CreateTicket: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const generateTicketNumber = (): string => {
-    const year = new Date().getFullYear();
-    const timestamp = Date.now();
-    const random = Math.random().toString(36).substr(2, 6).toUpperCase();
-    return `TKT-${year}-${random}`;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -105,11 +99,10 @@ const CreateTicket: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      const newTicketNumber = generateTicketNumber();
+      const newTicketNumber = TicketService.generateTicketNumber();
       
       // Create ticket object
-      const newTicket: Ticket = {
-        id: Date.now().toString(),
+      const newTicket: Omit<Ticket, 'id' | 'createdAt' | 'updatedAt'> = {
         ticketNumber: newTicketNumber,
         title: form.title,
         description: form.description,
@@ -123,42 +116,35 @@ const CreateTicket: React.FC = () => {
         submitterEmail: user?.email || '',
         attachments: [],
         internalNotes: [],
-        slaDeadline: new Date(Date.now() + (form.priority === 'critical' ? 1 : form.priority === 'high' ? 4 : form.priority === 'medium' ? 24 : 72) * 60 * 60 * 1000),
-        createdAt: new Date(),
-        updatedAt: new Date()
+        slaDeadline: new Date(Date.now() + (form.priority === 'critical' ? 1 : form.priority === 'high' ? 4 : form.priority === 'medium' ? 24 : 72) * 60 * 60 * 1000)
       };
 
-      // Get existing tickets from localStorage
-      const existingTickets = JSON.parse(localStorage.getItem('tickets') || '[]');
+      // Save to Supabase
+      const savedTicket = await TicketService.createTicket(newTicket);
       
-      // Add new ticket
-      const updatedTickets = [...existingTickets, newTicket];
-      
-      // Save back to localStorage
-      localStorage.setItem('tickets', JSON.stringify(updatedTickets));
-
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      setTicketNumber(newTicketNumber);
-      setSubmitted(true);
-      
-      // Reset form after 3 seconds
-      setTimeout(() => {
-        setSubmitted(false);
-        setTicketNumber('');
-        setForm({
-          title: '',
-          organizationId: user?.organizationId || '',
-          organizationName: user?.organizationName || '',
-          department: user?.department || '',
-          category: '',
-          priority: 'medium',
-          description: '',
-          attachments: []
-        });
-        setErrors({});
-      }, 3000);
+      if (savedTicket) {
+        setTicketNumber(newTicketNumber);
+        setSubmitted(true);
+        
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setSubmitted(false);
+          setTicketNumber('');
+          setForm({
+            title: '',
+            organizationId: user?.organizationId || '',
+            organizationName: user?.organizationName || '',
+            department: user?.department || '',
+            category: '',
+            priority: 'medium',
+            description: '',
+            attachments: []
+          });
+          setErrors({});
+        }, 3000);
+      } else {
+        throw new Error('Failed to create ticket');
+      }
     } catch (error) {
       console.error('Error creating ticket:', error);
       alert('Error creating ticket. Please try again.');
@@ -211,7 +197,7 @@ const CreateTicket: React.FC = () => {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Ticket Created Successfully!</h2>
           <p className="text-gray-600 mb-4">
-            Your support ticket has been submitted and assigned a tracking number.
+            Your support ticket has been submitted and saved to the database.
           </p>
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
             <p className="text-sm text-blue-800">
@@ -575,11 +561,9 @@ const CreateTicket: React.FC = () => {
             <div className="bg-gray-50 rounded-xl border border-gray-200 p-6">
               <h4 className="text-sm font-semibold text-gray-900 mb-3">Need Immediate Help?</h4>
               <div className="text-sm text-gray-600 space-y-2">
-                <p>For IT Support:</p>
-                <p className="font-medium text-red-600">Support: +977 9842812555</p>
                 <p>For critical security incidents:</p>
-                <p className="font-medium text-red-600">Emergency: +91 7995462393</p>
-                <p className="font-medium">Email: paudel.abi@gmail.com</p>
+                <p className="font-medium text-red-600">Emergency: +1 (555) 911-SOC</p>
+                <p className="font-medium">Email: emergency@itsoc.com</p>
               </div>
             </div>
           </div>
